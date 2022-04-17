@@ -3,15 +3,14 @@ import { Image, ScrollView, StyleSheet, TextInput } from "react-native"
 
 import { Text, View } from "../components/Themed"
 import { RootTabScreenProps } from "../../types"
-import { getSpotifyCredentials } from "../utils/getSpotifyCredentials"
-import { getAuthorizationCode } from "../utils/getAuthorizationCode"
+import { getTokens } from "../api/getTokens"
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [value, onChangeText] = useState("")
   // const { clientId, clientSecret, redirectUri } = getSpotifyCredentials()
-  getAuthorizationCode()
+  getTokens()
   // console.log("authCode:", authCode)
 
   return (
