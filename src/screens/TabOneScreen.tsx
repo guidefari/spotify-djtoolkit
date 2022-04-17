@@ -3,11 +3,16 @@ import { Image, ScrollView, StyleSheet, TextInput } from "react-native"
 
 import { Text, View } from "../components/Themed"
 import { RootTabScreenProps } from "../../types"
+import { getSpotifyCredentials } from "../utils/getSpotifyCredentials"
+import { getAuthorizationCode } from "../utils/getAuthorizationCode"
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [value, onChangeText] = useState("")
+  // const { clientId, clientSecret, redirectUri } = getSpotifyCredentials()
+  getAuthorizationCode()
+  // console.log("authCode:", authCode)
 
   return (
     <ScrollView>
@@ -24,7 +29,7 @@ export default function TabOneScreen({
           onChangeText={text => onChangeText(text)}
           value={value}
           autoFocus
-          placeholder="Enter track URL here"
+          placeholder="Paste track URL here"
           selectTextOnFocus
           textContentType="URL"
           returnKeyType="search"
