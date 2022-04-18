@@ -21,7 +21,7 @@ export const getAuthorizationCode = async () => {
   try {
     const { clientId } = getSpotifyCredentials() //we wrote this function above
     const redirectUrl = AuthSession.makeRedirectUri({ path: "/" }) //this will be something like https://auth.expo.io/@your-username/your-app-slug
-    console.log("redirectUrl:", redirectUrl)
+    console.log("Get Auth code redirectUrl -->:", redirectUrl)
 
     const result = await AuthSession.startAsync({
       authUrl:
@@ -33,7 +33,6 @@ export const getAuthorizationCode = async () => {
         "&redirect_uri=" +
         encodeURIComponent(redirectUrl),
     })
-    console.log("result:", result)
     return result.params.code
   } catch (err) {
     console.error(err)

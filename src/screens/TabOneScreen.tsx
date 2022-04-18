@@ -1,17 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Image, ScrollView, StyleSheet, TextInput } from "react-native"
 
 import { Text, View } from "../components/Themed"
 import { RootTabScreenProps } from "../../types"
-import { getTokens } from "../api/getTokens"
+import { getTrackDetails, getUserPlaylists } from "../api/SpotifyService"
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const [value, onChangeText] = useState("")
-  // const { clientId, clientSecret, redirectUri } = getSpotifyCredentials()
-  getTokens()
-  // console.log("authCode:", authCode)
+  const [songDeets, setSongDeets] = useState({})
+
+  useEffect(() => {
+    getTrackInfo()
+  }, [])
+
+  async function getTrackInfo() {
+    // const pl = await getUserPlaylists()
+    const song = await getTrackDetails("3LxMj7QL8jTGTp5970khkq")
+    song && setSongDeets(song)
+  }
+
+  console.log(songDeets)
 
   return (
     <ScrollView>
@@ -38,23 +48,31 @@ export default function TabOneScreen({
           lightColor="#eee"
           darkColor="rgba(255,255,255,0.1)"
         />
-        <Text style={styles.title}>Artist - Track Name</Text>
-        <View
-          style={styles.separator}
-          lightColor="#eee"
-          darkColor="rgba(255,255,255,0.1)"
-        />
-        <Image
-          source={{
-            uri: "https://images.unsplash.com/photo-1619983081593-e2ba5b543168?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-          }}
-          style={{ width: 400, height: 400 }}
-        />
-        <View style={styles.detailsWrap}>
-          <Text style={styles.title}>107bpm</Text>
-          <Text>Album/EP Name</Text>
-          <Text>deep house</Text>
-        </View>
+        {songDeets && (
+          <>
+            <Text style={styles.title}>
+              {songDeets?.artists?.map(artist => `${artist} | `)} -{" "}
+              {songDeets.trackName}
+            </Text>
+            <View
+              style={styles.separator}
+              lightColor="#eee"
+              darkColor="rgba(255,255,255,0.1)"
+            />
+            <Image
+              source={{
+                uri: songDeets.image,
+              }}
+              style={{ width: 400, height: 400 }}
+            />
+            {/* TODO: place genre pills under image */}
+            <View style={styles.detailsWrap}>
+              <Text style={styles.title}>107bpm</Text>
+              <Text>{songDeets.albumName}</Text>
+              <Text>deep house</Text>
+            </View>
+          </>
+        )}
       </View>
     </ScrollView>
   )
